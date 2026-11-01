@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Axone &mdash; infrastructure d'entreprise</title>
+<meta name="description" content="Homelab Axone : Active Directory, parc h&eacute;t&eacute;rog&egrave;ne, partages cloisonn&eacute;s, supervision SIEM et automatisation Ansible.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="home">
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Florent Vazeux &middot; administrateur d'infrastructures s&eacute;curis&eacute;es</p>
+    <h1>Axone &mdash; infrastructure d'entreprise</h1>
+    <p class="lede">Une PME fictive d'infog&eacute;rance pour collectivit&eacute;s, dont le parc doit &ecirc;tre centralis&eacute;, cloisonn&eacute; et supervis&eacute;. Six machines r&eacute;parties sur trois sites, un domaine Active Directory, des partages par service, une supervision SIEM et une automatisation par code.</p>
+    <div class="contact">
+      <span class="pill">Windows Server 2022</span>
+      <span class="pill">Linux Mint 22</span>
+      <span class="pill">Windows 11</span>
+      <span class="pill">Tailscale</span>
+    </div>
+    <p class="stamp">Homelab personnel &nbsp;&middot;&nbsp; octobre 2026</p>
+  </div>
+</header>
+
+<main class="wrap" id="contenu">
+<a class="back" href="https://flo466.github.io/portfolio/">&larr; Portfolio</a>
+
+<div class="banner">
+  <div>
+    <div class="lab">Parc g&eacute;r&eacute;</div>
+    <div class="val">6 machines</div>
+  </div>
+  <div class="sep">
+    <div class="lab">Domaine</div>
+    <div class="val">serv-net.lan</div>
+  </div>
+  <div class="sep">
+    <div class="lab">Sites interconnect&eacute;s</div>
+    <div class="val">3</div>
+  </div>
+</div>
+
+<nav class="sommaire" aria-label="Sommaire de la page">
+  <span class="lab">Sur cette page</span>
+  <a href="#piliers">Les cinq piliers</a>
+  <a href="#reseau">R&eacute;seau multi-sites</a>
+  <a href="#parc">Vue du parc</a>
+  <a href="#ad">Active Directory</a>
+  <a href="#partages">Partages</a>
+  <a href="#supervision">Supervision</a>
+  <a href="#ansible">Automatisation</a>
+</nav>
+
+<div class="kpis">
+  <div class="kpi"><div class="n">6</div><div class="l">machines g&eacute;r&eacute;es</div></div>
+  <div class="kpi"><div class="n">7</div><div class="l">agents SIEM</div></div>
+  <div class="kpi"><div class="n">5</div><div class="l">playbooks Ansible</div></div>
+  <div class="kpi"><div class="n">3</div><div class="l">sites interconnect&eacute;s</div></div>
+</div>
+
+<figure>
+  <img src="./gestionnaire-vm.png" alt="Vue des machines virtuelles depuis le gestionnaire de virtualisation sous Linux">
+  <figcaption>Les machines du parc, vues depuis l'h&ocirc;te de virtualisation sous Linux. C'est depuis cet h&ocirc;te que sont administr&eacute;s le contr&ocirc;leur de domaine et les postes de test.</figcaption>
+</figure>
+
+<h2 class="sec-title" id="piliers">Les cinq piliers</h2>
+<p>L'infrastructure r&eacute;pond &agrave; un besoin de centralisation sur un parc h&eacute;t&eacute;rog&egrave;ne. Cinq dispositifs articul&eacute;s, chacun avec son p&eacute;rim&egrave;tre et son objet.</p>
+
+<div class="grid">
+
+  <div class="card">
+    <span class="no">01 &nbsp;/&nbsp; IDENTIT&Eacute;</span>
+    <h3>Active Directory et strat&eacute;gies</h3>
+    <p>Un contr&ocirc;leur de domaine Windows Server 2022 porte l'annuaire, le DNS et le DHCP. Les postes, Linux et Windows m&ecirc;l&eacute;s, y sont joints. Les strat&eacute;gies de groupe appliquent la politique de mot de passe, le verrouillage de session et le durcissement des protocoles obsol&egrave;tes.</p>
+    <div class="req"><b>Ce que &ccedil;a r&egrave;gle</b><span>Une seule source d'identit&eacute; pour un parc qui n'utilise pas le m&ecirc;me syst&egrave;me d'exploitation partout.</span></div>
+    <div class="pills">
+      <span class="pill">OU par service</span>
+      <span class="pill">GPO</span>
+      <span class="pill">SMBv1</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="no">02 &nbsp;/&nbsp; R&Eacute;SEAU</span>
+    <h3>Trois sites, un seul plan d'adressage</h3>
+    <p>Les sites sont reli&eacute;s par un VPN maill&eacute;. Le serveur n'&eacute;tant pas en local technique, les postes distants joignent le contr&ocirc;leur de domaine par le r&eacute;seau superpos&eacute;, sans IP fixe ni ouverture de ports sur la box.</p>
+    <div class="req"><b>Ce que &ccedil;a r&egrave;gle</b><span>Aucun port expos&eacute; sur Internet, et une administration distante qui fonctionne depuis n'importe o&ugrave;.</span></div>
+    <div class="pills">
+      <span class="pill">VPN maill&eacute;</span>
+      <span class="pill">routage de sous-r&eacute;seau</span>
+      <span class="pill">NAT</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="no">03 &nbsp;/&nbsp; PARTAGES</span>
+    <h3>Cloisonnement par service</h3>
+    <p>Les donn&eacute;es sont r&eacute;parties en partages distincts, chacun accessible par groupe. Un utilisateur de la comptabilit&eacute; ne voit pas les donn&eacute;es RH, et la direction dispose d'un acc&egrave;s transverse assum&eacute;.</p>
+    <div class="req"><b>Ce que &ccedil;a r&egrave;gle</b><span>Le cloisonnement est port&eacute; par l'annuaire, pas par une convention de dossiers.</span></div>
+    <div class="pills">
+      <span class="pill">SMB</span>
+      <span class="pill">groupes AD</span>
+      <span class="pill">montage CIFS</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="no">04 &nbsp;/&nbsp; SUPERVISION</span>
+    <h3>SIEM et inventaire</h3>
+    <p>Un SIEM collecte les &eacute;v&eacute;nements de sept agents r&eacute;partis sur le parc, et un outil d'inventaire recense les machines dans une entit&eacute; d&eacute;di&eacute;e. Les vuln&eacute;rabilit&eacute;s d&eacute;tect&eacute;es sont analys&eacute;es, prioris&eacute;es puis trait&eacute;es.</p>
+    <div class="req"><b>Ce que &ccedil;a r&egrave;gle</b><span>Une anomalie ne reste plus silencieuse, et le parc cesse d'&ecirc;tre un inventaire tenu &agrave; la main.</span></div>
+    <div class="pills">
+      <span class="pill">Wazuh</span>
+      <span class="pill">GLPI</span>
+      <span class="pill">7 agents</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="no">05 &nbsp;/&nbsp; AUTOMATISATION</span>
+    <h3>Configuration reproductible</h3>
+    <p>L'&eacute;tat attendu des postes Linux est d&eacute;crit dans des r&ocirc;les, puis appliqu&eacute; par un orchestrateur. Ce que les strat&eacute;gies de groupe font pour Windows, l'automatisation le fait pour Linux : d&eacute;ploiement centralis&eacute;, reproductible et versionn&eacute;.</p>
+    <div class="req"><b>Ce que &ccedil;a r&egrave;gle</b><span>Une configuration appliqu&eacute;e &agrave; la main est perdue au premier r&eacute;installation. Une configuration d&eacute;crite se rejoue.</span></div>
+    <div class="pills">
+      <span class="pill">Ansible</span>
+      <span class="pill">playbooks</span>
+      <span class="pill">idempotence</span>
+    </div>
+  </div>
+
+</div>
+
+<article>
+
+<h2 id="reseau">R&eacute;seau et acc&egrave;s distant multi-sites</h2>
+<p>L'infrastructure est r&eacute;partie sur trois sites &mdash; le domicile du dirigeant, l'open space et le t&eacute;l&eacute;travail &mdash; interconnect&eacute;s par un r&eacute;seau priv&eacute; maill&eacute;. Chaque h&ocirc;te isole ses machines dans un sous-r&eacute;seau de virtualisation distinct.</p>
+
+<table>
+<thead><tr><th>Segment</th><th>Adressage</th><th>Contenu</th></tr></thead>
+<tbody>
+<tr><td>R&eacute;seau local</td><td><code>192.168.1.0/24</code></td><td>Les deux h&ocirc;tes du site principal</td></tr>
+<tr><td>Sous-r&eacute;seau serveur</td><td><code>192.168.122.0/24</code></td><td>Le contr&ocirc;leur de domaine</td></tr>
+<tr><td>Sous-r&eacute;seau Linux</td><td><code>192.168.124.0/24</code></td><td>Les trois postes Linux</td></tr>
+<tr><td>Sous-r&eacute;seau Windows</td><td><code>192.168.123.0/24</code></td><td>Les deux postes Windows</td></tr>
+</tbody>
+</table>
+
+<figure>
+  <img src="./topology.png" alt="Sch&eacute;ma du r&eacute;seau Axone : trois sites reli&eacute;s par un VPN maill&eacute;, et les sous-r&eacute;seaux de virtualisation de chaque h&ocirc;te">
+  <figcaption>Les trois sites et les sous-r&eacute;seaux isol&eacute;s de chaque h&ocirc;te. Le serveur expose son r&eacute;seau interne au r&eacute;seau superpos&eacute;, ce qui permet aux postes distants de joindre l'annuaire.</figcaption>
+</figure>
+
+<div class="note">
+<p><strong>Pourquoi cette architecture.</strong> Le serveur est h&eacute;berg&eacute; au domicile du dirigeant, faute de local technique. Les postes de l'open space et du t&eacute;l&eacute;travail doivent malgr&eacute; tout joindre le contr&ocirc;leur de domaine. Le r&eacute;seau priv&eacute; maill&eacute; r&eacute;sout ce probl&egrave;me sans IP fixe et sans ouvrir de port sur la box.</p>
+</div>
+
+<h2 id="parc">Vue d'ensemble du parc</h2>
+<p>Six machines, deux syst&egrave;mes d'exploitation, six r&ocirc;les. Toutes sont supervis&eacute;es et inventori&eacute;es.</p>
+
+<table>
+<thead><tr><th>Machine</th><th>Syst&egrave;me</th><th>R&ocirc;le</th><th>Supervision</th></tr></thead>
+<tbody>
+<tr><td>SRV-AD</td><td>Windows Server 2022</td><td>Annuaire, DNS, DHCP</td><td>Wazuh + GLPI</td></tr>
+<tr><td>PC-Comptabilit&eacute;</td><td>Linux Mint 22</td><td>Comptabilit&eacute;</td><td>Wazuh + GLPI</td></tr>
+<tr><td>PC-RH</td><td>Linux Mint 22</td><td>Ressources humaines</td><td>Wazuh + GLPI</td></tr>
+<tr><td>PC-Communication</td><td>Linux Mint 22</td><td>Communication</td><td>Wazuh + GLPI</td></tr>
+<tr><td>PC-Info-01</td><td>Windows 11</td><td>Informatique</td><td>Wazuh + GLPI</td></tr>
+<tr><td>PC-Direction</td><td>Windows 11</td><td>Direction</td><td>Wazuh + GLPI</td></tr>
+</tbody>
+</table>
+
+<h2 id="ad">Active Directory &mdash; structure et strat&eacute;gies</h2>
+<p>Chaque service dispose de son unit&eacute; d'organisation, ce qui permet d'appliquer des strat&eacute;gies diff&eacute;renci&eacute;es sans dupliquer les r&egrave;gles. C'est le m&ecirc;me principe de cloisonnement que pour les partages, mais appliqu&eacute; &agrave; la configuration des postes.</p>
+
+<figure>
+  <img src="./ad-users.png" alt="Arborescence des unit&eacute;s d'organisation du domaine, une par service">
+  <figcaption>Les unit&eacute;s d'organisation, une par service, avec une unit&eacute; s&eacute;par&eacute;e pour les serveurs. C'est cette structure qui supporte les strat&eacute;gies diff&eacute;renci&eacute;es.</figcaption>
+</figure>
+
+<table>
+<thead><tr><th>Strat&eacute;gie</th><th>Effet</th></tr></thead>
+<tbody>
+<tr><td>Mot de passe</td><td>12 caract&egrave;res, complexit&eacute; exig&eacute;e, expiration &agrave; 90 jours</td></tr>
+<tr><td>Verrouillage</td><td>Blocage du compte apr&egrave;s 5 tentatives</td></tr>
+<tr><td>Protocoles obsol&egrave;tes</td><td>D&eacute;sactivation de SMBv1 sur tout le parc</td></tr>
+<tr><td>Identit&eacute; visuelle</td><td>Fond d'&eacute;cran d'entreprise sur les postes joints</td></tr>
+<tr><td>Lecteurs r&eacute;seau</td><td>Mappage automatique des partages selon le groupe</td></tr>
+</tbody>
+</table>
+
+<figure>
+  <img src="./gpo-list.png" alt="Liste des strat&eacute;gies de groupe d&eacute;ploy&eacute;es sur le domaine">
+  <figcaption>Les cinq strat&eacute;gies d&eacute;ploy&eacute;es. Elles s'appliquent automatiquement &agrave; la jonction du poste, sans intervention sur la machine.</figcaption>
+</figure>
+
+<figure>
+  <img src="./rdp-admin.png" alt="Session d'administration &agrave; distance sur le serveur, ouverte depuis un poste du parc">
+  <figcaption>Administration distante du serveur. Elle passe par le r&eacute;seau superpos&eacute;, sans exposer de service sur Internet.</figcaption>
+</figure>
+
+<h2 id="partages">Partages de fichiers et cloisonnement</h2>
+<p>Les donn&eacute;es sont cloisonn&eacute;es par service, via des partages accessibles selon l'appartenance aux groupes de l'annuaire. Le m&ecirc;me partage est mont&eacute; indiff&eacute;remment depuis un poste Windows ou Linux.</p>
+
+<table>
+<thead><tr><th>Partage</th><th>Groupes autoris&eacute;s</th><th>Contenu</th></tr></thead>
+<tbody>
+<tr><td><code>Finance</code></td><td>Comptabilit&eacute;, direction</td><td>Donn&eacute;es comptables</td></tr>
+<tr><td><code>RH</code></td><td>Ressources humaines, direction</td><td>Paie et contrats</td></tr>
+<tr><td><code>Communication</code></td><td>Communication, direction</td><td>Communication interne</td></tr>
+<tr><td><code>Commun</code></td><td>Tous les utilisateurs du domaine</td><td>Documents partag&eacute;s</td></tr>
+<tr><td><code>Direction</code></td><td>Direction</td><td>Documents de direction</td></tr>
+</tbody>
+</table>
+
+<figure>
+  <img src="./partages-win11.png" alt="Lecteurs r&eacute;seau mapp&eacute;s vus depuis un poste Windows 11 de la direction">
+  <figcaption>Les partages mont&eacute;s sur le poste de direction sous Windows 11, avec l'acc&egrave;s transverse que son groupe autorise.</figcaption>
+</figure>
+
+<figure>
+  <img src="./partages-linux.png" alt="Partages mont&eacute;s en CIFS vus depuis un poste Linux Mint">
+  <figcaption>Les m&ecirc;mes partages mont&eacute;s en CIFS sur un poste Linux. Le cloisonnement est port&eacute; par l'annuaire, pas par le syst&egrave;me du poste.</figcaption>
+</figure>
+
+<h2 id="supervision">Supervision SIEM</h2>
+<p>Un syst&egrave;me de gestion des &eacute;v&eacute;nements de s&eacute;curit&eacute; collecte les journaux de sept agents r&eacute;partis sur l'ensemble du parc. Une &eacute;tude de cas a port&eacute; sur vingt-cinq vuln&eacute;rabilit&eacute;s critiques, analys&eacute;es et prioris&eacute;es selon un cycle document&eacute; : d&eacute;tection, analyse, traitement, v&eacute;rification.</p>
+
+<figure>
+  <img src="./wazuh-agents.png" alt="Tableau de bord du SIEM : agents actifs et remont&eacute;e des &eacute;v&eacute;nements">
+  <figcaption>Les sept agents d&eacute;ploy&eacute;s et leur &eacute;tat de remont&eacute;e. Le SIEM tourne en conteneurs sur le serveur du site principal.</figcaption>
+</figure>
+
+<div class="note">
+<p><strong>Ce que la supervision apporte concr&egrave;tement.</strong> Sans elle, une panne silencieuse se d&eacute;couvre par l'utilisateur qui appelle. Avec elle, elle se d&eacute;couvre par une alerte. C'est la diff&eacute;rence entre un d&eacute;lai de d&eacute;tection mesur&eacute; en heures et un d&eacute;lai mesur&eacute; en minutes.</p>
+</div>
+
+<h2 id="glpi">Gestion de parc</h2>
+<ul>
+  <li>Inventaire automatis&eacute; des postes, agent d&eacute;ploy&eacute; par automatisation</li>
+  <li>Entit&eacute; d&eacute;di&eacute;e au parc, pour le cloisonner d'autres clients</li>
+  <li>Administrateur d&eacute;l&eacute;gu&eacute;, dont les droits s'arr&ecirc;tent &agrave; cette entit&eacute;</li>
+</ul>
+
+<h2 id="ansible">Automatisation</h2>
+<p>La configuration des postes Linux est d&eacute;crite dans des r&ocirc;les, appliqu&eacute;s depuis un poste de contr&ocirc;le. C'est l'&eacute;quivalent des strat&eacute;gies de groupe pour le parc Linux, avec la m&ecirc;me promesse : d&eacute;ploiement centralis&eacute;, reproductible, versionn&eacute;.</p>
+
+<table>
+<thead><tr><th>R&ocirc;le</th><th>Objet</th></tr></thead>
+<tbody>
+<tr><td><code>wallpaper</code></td><td>D&eacute;ploiement de l'identit&eacute; visuelle sur les postes</td></tr>
+<tr><td><code>wazuh-agent</code></td><td>Installation et rattachement des agents SIEM</td></tr>
+<tr><td><code>maj-auto</code></td><td>Mises &agrave; jour de s&eacute;curit&eacute; automatiques au d&eacute;marrage</td></tr>
+<tr><td><code>glpi-agent</code></td><td>D&eacute;ploiement des agents d'inventaire</td></tr>
+<tr><td><code>dns-fix</code></td><td>Correctif de r&eacute;solution, appliqu&eacute; de fa&ccedil;on uniforme</td></tr>
+</tbody>
+</table>
+
+<h2 id="maj">Mises &agrave; jour automatiques</h2>
+<p>Chaque machine applique ses mises &agrave; jour de s&eacute;curit&eacute; seule, avec tra&ccedil;abilit&eacute; dans un journal d&eacute;di&eacute;. Trois m&eacute;thodes coexistent selon le syst&egrave;me, pour un r&eacute;sultat identique.</p>
+
+<table>
+<thead><tr><th>Machine</th><th>M&eacute;thode</th></tr></thead>
+<tbody>
+<tr><td>Serveur</td><td>Mises &agrave; jour de s&eacute;curit&eacute; seules, planifi&eacute;es &agrave; 01:00</td></tr>
+<tr><td>H&ocirc;te Linux</td><td>Service d&eacute;clench&eacute; au d&eacute;marrage</td></tr>
+<tr><td>Trois postes Linux</td><td>M&ecirc;me service, d&eacute;ploy&eacute; par automatisation</td></tr>
+</tbody>
+</table>
+
+<h2>Ce que d&eacute;montre ce montage</h2>
+<ul>
+  <li>Un annuaire unique pour un parc <strong>h&eacute;t&eacute;rog&egrave;ne</strong> : cinq postes Windows et Linux coexistent, avec les m&ecirc;mes r&egrave;gles d'identit&eacute; et de mot de passe.</li>
+  <li>Un <strong>cloisonnement port&eacute; par l'annuaire</strong> et non par une arborescence de dossiers : les droits suivent le groupe, pas le chemin.</li>
+  <li>Un acc&egrave;s distant <strong>sans port expos&eacute;</strong> sur Internet, ce qui &eacute;limine la surface d'attaque la plus courante.</li>
+  <li>Une <strong>supervision effective</strong> de sept agents, avec une m&eacute;thode de traitement des vuln&eacute;rabilit&eacute;s qui va jusqu'&agrave; la v&eacute;rification.</li>
+  <li>Une configuration <strong>rejouable</strong> : ce que la main applique une fois et perd, le code le r&eacute;applique &agrave; l'identique.</li>
+  <li>Des mises &agrave; jour <strong>trac&eacute;es</strong> sur chaque machine, sans intervention humaine ni d&eacute;rive dans le temps.</li>
+</ul>
+
+<h2>Limites assum&eacute;es</h2>
+<p>Le serveur est h&eacute;berg&eacute; au domicile du dirigeant, faute de local technique. La disponibilit&eacute; d&eacute;pend donc de la connexion de ce site, et l'architecture repose sur un point unique pour l'annuaire. Une mont&eacute;e en charge en production imposerait un second contr&ocirc;leur de domaine et un site d'h&eacute;bergement distinct.</p>
+<p>Les postes Windows re&ccedil;oivent leur configuration par strat&eacute;gies de groupe, les postes Linux par automatisation. Deux m&eacute;canismes pour un m&ecirc;me r&eacute;sultat : c'est la cons&eacute;quence directe de l'h&eacute;t&eacute;rog&eacute;n&eacute;it&eacute; du parc, et non un choix d'architecture.</p>
+
+</article>
+</main>
+
+<footer><div class="wrap"><p>Axone &middot; homelab personnel &middot; Florent Vazeux &middot; octobre 2026</p></div></footer>
+</body>
+</html>
