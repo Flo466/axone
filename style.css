@@ -35,8 +35,8 @@
   --mono:
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
     monospace;
-  --col: 1200px;
-  --col-wide: 1200px;
+  --col: 1400px;
+  --col-wide: 1400px;
   --col-fig: 1500px;
   color-scheme: light;
 }
