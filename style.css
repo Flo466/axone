@@ -2,47 +2,33 @@
    avec accent terre cuite. Genere pour un depot dedie. */
 
 :root {
-  /* ---------- palette organique : sous-bois, argile et pierre ---------- */
-  --paper: #f1efe4; /* fond de page, lin */
-  --white: #ffffff; /* verre, puces, reflets */
-  --ink: #1b2a22; /* sous-bois : texte principal */
-  --ink-2: #56645a; /* mousse grisee : texte secondaire */
-  --green: #a8543a; /* feuille : liens, accents */
-  --green-ink: #6b3120; /* foret profonde : labels et sous-titres */
-  --clay: #c07a5a; /* terre cuite : accent chaud */
-  --sage: #8fbfa2; /* sauge : filets et halos */
-  --ochre: #d9a54e; /* ocre : filets et halos */
-  --sky: #7a9fb5; /* pierre bleue : filets et halos */
-
-  /* ---------- verre liquide ---------- */
-  --glass: linear-gradient(
-    150deg,
-    rgba(255, 255, 255, 0.66),
-    rgba(255, 255, 255, 0.26)
-  ); /* verre translucide : cartes */
-  --glass-strong: linear-gradient(
-    150deg,
-    rgba(255, 255, 255, 0.9),
-    rgba(255, 255, 255, 0.66)
-  ); /* verre opaque : lecture longue */
-  --glass-thin: linear-gradient(
-    150deg,
-    rgba(255, 255, 255, 0.48),
-    rgba(255, 255, 255, 0.18)
-  ); /* verre leger : tuiles, puces */
-  --glass-line: rgba(255, 255, 255, 0.72); /* arete du verre */
-  --line: rgba(168, 84, 58, 0.16); /* filets verts clairs */
-  --line-2: rgba(168, 84, 58, 0.3); /* filets verts appuyes */
-  --blur: 22px;
-
-  --shadow-s: 0 12px 26px -20px rgba(48, 26, 18, 0.5);
-  --shadow-m: 0 32px 70px -38px rgba(48, 26, 18, 0.55);
-  --sheen: inset 0 1px 0 rgba(255, 255, 255, 0.95); /* reflet sur l'arete */
-  --glass-inner:
-    inset 0 1px 1px rgba(255, 255, 255, 0.6),
-    inset 0 -16px 32px -28px rgba(107, 49, 32, 0.8);
-
-  --code-bg: #12241c; /* fond des blocs de code */
+  /* ---------- palette claire : blanc, accent terre cuite ----------
+     Axone garde son identite chaude, mais posee sur du blanc. */
+  --bg: #ffffff;
+  --paper: #ffffff;
+  --wash: #fbf7f4;
+  --white: #ffffff;
+  --ink: #1b2a22;
+  --ink-2: #5e5a52;
+  --green: #a8543a;
+  --green-ink: #6b3120;
+  --green-soft: #f6eae4;
+  --clay: #c07a5a;
+  --sage: #8fbfa2;
+  --ochre: #d9a54e;
+  --sky: #7a9fb5;
+  --glass: #ffffff;
+  --glass-strong: #ffffff;
+  --glass-thin: #ffffff;
+  --glass-line: #efe4de;
+  --line: #efe4de;
+  --line-2: #ddc9c0;
+  --blur: 0px;
+  --shadow-s: 0 1px 2px rgba(48, 26, 18, 0.05), 0 4px 10px -6px rgba(48, 26, 18, 0.1);
+  --shadow-m: 0 2px 4px rgba(48, 26, 18, 0.05), 0 14px 28px -14px rgba(48, 26, 18, 0.16);
+  --sheen: 0 0 0 0 rgba(0, 0, 0, 0);
+  --glass-inner: 0 0 0 0 rgba(0, 0, 0, 0);
+  --code-bg: #12241c;
   --sans:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, sans-serif;
@@ -50,9 +36,8 @@
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
     monospace;
   --col: 1200px;
-  --col-wide: 1400px;
-  --col-fig: 1600px; /* figures larges des comptes rendus */
-
+  --col-wide: 1200px;
+  --col-fig: 1500px;
   color-scheme: light;
 }
 * {
@@ -67,7 +52,6 @@ html {
   color: var(--ink);
 }
 
-/* fond : quatre halos (sauge, pierre, argile, ocre) fixes derriere le verre */
 body {
   position: relative;
   margin: 0;
@@ -78,36 +62,6 @@ body {
   font-size: 17px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
-}
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image:
-    radial-gradient(
-      58% 54% at 2% -8%,
-      rgba(192, 122, 90, 0.5),
-      transparent 68%
-    ),
-    radial-gradient(
-      48% 46% at 100% 0%,
-      rgba(122, 159, 181, 0.46),
-      transparent 70%
-    ),
-    radial-gradient(
-      54% 50% at 96% 98%,
-      rgba(192, 122, 90, 0.38),
-      transparent 72%
-    ),
-    radial-gradient(
-      58% 52% at 0% 100%,
-      rgba(217, 165, 78, 0.42),
-      transparent 74%
-    );
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
 /* lien d'evitement : visible seulement au clavier */
@@ -157,23 +111,7 @@ body::before {
   background: var(--glass);
   border: 1px solid var(--glass-line);
   box-shadow: var(--shadow-m), var(--sheen), var(--glass-inner);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  backdrop-filter: blur(28px) saturate(180%);
   overflow: hidden;
-}
-.masthead > .wrap::after,
-.masthead > .wrap-wide::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: -60% 40% 45% -35%;
-  border-radius: 50%;
-  background: radial-gradient(
-    closest-side,
-    rgba(255, 255, 255, 0.85),
-    transparent 70%
-  );
-  pointer-events: none;
 }
 .masthead .eyebrow {
   display: inline-flex;
@@ -202,7 +140,7 @@ body::before {
 }
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   .home .masthead h1 {
-    background: linear-gradient(100deg, #143a2b, #2f6f52 50%, #4d7186);
+    background: linear-gradient(100deg, #6b3120, #a8543a 52%, #c07a5a);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -319,7 +257,7 @@ body::before {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: linear-gradient(140deg, var(--sage), var(--clay));
+  background: linear-gradient(140deg, var(--clay), var(--ochre));
   box-shadow: 0 0 0 4px rgba(143, 191, 162, 0.22);
 }
 .sec-hint {
@@ -364,71 +302,10 @@ body::before {
   background: var(--glass);
   border: 1px solid var(--glass-line);
   box-shadow: var(--shadow-s), var(--sheen), var(--glass-inner);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
-  backdrop-filter: blur(var(--blur)) saturate(180%);
   transition:
     transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
     box-shadow 0.28s ease,
     border-color 0.28s ease;
-}
-.card::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    radial-gradient(
-      90% 80% at 4% -12%,
-      rgba(143, 191, 162, 0.4),
-      transparent 62%
-    ),
-    radial-gradient(
-      65% 55% at 92% 108%,
-      rgba(255, 255, 255, 0.55),
-      transparent 72%
-    );
-  pointer-events: none;
-  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-.grid > .card:nth-child(2)::before {
-  background:
-    radial-gradient(
-      90% 80% at 4% -12%,
-      rgba(192, 122, 90, 0.3),
-      transparent 62%
-    ),
-    radial-gradient(
-      65% 55% at 92% 108%,
-      rgba(255, 255, 255, 0.55),
-      transparent 72%
-    );
-}
-.grid > .card:nth-child(3)::before {
-  background:
-    radial-gradient(
-      90% 80% at 4% -12%,
-      rgba(122, 159, 181, 0.32),
-      transparent 62%
-    ),
-    radial-gradient(
-      65% 55% at 92% 108%,
-      rgba(255, 255, 255, 0.55),
-      transparent 72%
-    );
-}
-.grid > .card:nth-child(4)::before {
-  background:
-    radial-gradient(
-      90% 80% at 4% -12%,
-      rgba(217, 165, 78, 0.3),
-      transparent 62%
-    ),
-    radial-gradient(
-      65% 55% at 92% 108%,
-      rgba(255, 255, 255, 0.55),
-      transparent 72%
-    );
 }
 .card::after {
   content: "";
@@ -437,23 +314,16 @@ body::before {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    var(--sage),
-    var(--sky) 30%,
-    var(--clay) 62%,
-    var(--ochre)
-  );
-  opacity: 0.5;
+  background: var(--green);
+  opacity: 0.35;
   transition: opacity 0.25s ease;
 }
 a.card:hover,
 a.card:focus-visible {
   transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.95);
+  border-color: var(--line-2);
   box-shadow:
     0 34px 64px -30px rgba(48, 26, 18, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.45),
     var(--sheen),
     var(--glass-inner);
 }
@@ -479,12 +349,8 @@ a.card:focus-visible {
   font-size: 1.05rem;
   line-height: 1;
   border-radius: 13px;
-  background: linear-gradient(
-    155deg,
-    rgba(255, 255, 255, 0.96),
-    rgba(255, 255, 255, 0.46)
-  );
-  border: 1px solid rgba(255, 255, 255, 0.92);
+  background: var(--green-soft);
+  border: 1px solid var(--line-2);
   box-shadow:
     0 8px 16px -12px rgba(48, 26, 18, 0.8),
     var(--sheen);
@@ -524,7 +390,7 @@ a.card:focus-visible {
   font-family: var(--mono);
   font-size: 0.62rem;
   letter-spacing: 0.02em;
-  background: rgba(255, 255, 255, 0.68);
+  background: var(--green-soft);
   color: var(--green-ink);
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -570,10 +436,8 @@ a.card:focus-visible .card__foot span {
   padding: 16px 16px 15px;
   border-radius: 18px;
   background: var(--glass-thin);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--line);
   box-shadow: var(--shadow-s), var(--sheen);
-  -webkit-backdrop-filter: blur(16px) saturate(170%);
-  backdrop-filter: blur(16px) saturate(170%);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -612,8 +476,6 @@ a.card:focus-visible .card__foot span {
   background: var(--glass-strong);
   border: 1px solid var(--glass-line);
   box-shadow: var(--shadow-s), var(--sheen), var(--glass-inner);
-  -webkit-backdrop-filter: blur(20px) saturate(170%);
-  backdrop-filter: blur(20px) saturate(170%);
 }
 .note h2 {
   margin: 0 0 16px;
@@ -703,9 +565,9 @@ figure img {
   width: 100%;
   max-width: 100%;
   height: auto;
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--line);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--bg);
   box-shadow: var(--shadow-s);
 }
 figcaption {
@@ -723,7 +585,7 @@ img {
 code {
   font-family: var(--mono);
   font-size: 0.85em;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--wash);
   border: 1px solid var(--line);
   border-radius: 5px;
   padding: 0.1em 0.38em;
@@ -764,8 +626,6 @@ table {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow-s);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  backdrop-filter: blur(16px) saturate(160%);
 }
 thead th {
   background: rgba(12, 90, 68, 0.06);
@@ -794,8 +654,6 @@ blockquote {
   padding: 20px 24px 16px;
   margin: 0 0 1.8em;
   box-shadow: var(--shadow-s);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
-  backdrop-filter: blur(12px) saturate(140%);
 }
 blockquote p {
   margin: 0 0 0.6em;
@@ -833,8 +691,6 @@ li::marker {
   border: 1px solid var(--glass-line);
   border-radius: 999px;
   box-shadow: var(--sheen);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  backdrop-filter: blur(14px) saturate(160%);
   transition:
     box-shadow 0.18s ease,
     transform 0.18s ease;
@@ -859,28 +715,6 @@ footer p {
   margin: 0;
 }
 
-/* ============ repli : pas de backdrop-filter, verre plus opaque ============ */
-@supports not (
-  (backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))
-) {
-  .masthead > .wrap,
-  .masthead > .wrap-wide,
-  .card,
-  .skill,
-  .note,
-  table,
-  blockquote,
-  .back,
-  .kpi,
-  .banner,
-  .sommaire {
-    background: #f8f7ef;
-    border-color: rgba(48, 26, 18, 0.16);
-  }
-  .card--soon {
-    background: #f2f1e6;
-  }
-}
 
 /* ========================================================================
    Composants propres a la documentation Santelia
@@ -905,10 +739,8 @@ h2.sec-title {
   padding: 16px 18px;
   border-radius: 18px;
   background: var(--glass-thin);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--line);
   box-shadow: var(--shadow-s), var(--sheen);
-  -webkit-backdrop-filter: blur(16px) saturate(170%);
-  backdrop-filter: blur(16px) saturate(170%);
 }
 .kpi .n {
   font-size: 1.5rem;
@@ -938,8 +770,6 @@ h2.sec-title {
   border-left: 4px solid var(--green);
   background: var(--glass-strong);
   box-shadow: var(--shadow-s), var(--sheen);
-  -webkit-backdrop-filter: blur(16px) saturate(170%);
-  backdrop-filter: blur(16px) saturate(170%);
 }
 .banner .lab {
   font-family: var(--mono);
@@ -982,8 +812,6 @@ h2.sec-title {
   border-left: 4px solid var(--green);
   background: var(--glass-thin);
   box-shadow: var(--sheen);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  backdrop-filter: blur(14px) saturate(160%);
 }
 .sommaire .lab {
   font-family: var(--mono);
@@ -1055,7 +883,7 @@ figure[id] {
   border-color: var(--green);
 }
 .status--todo {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--bg);
   color: var(--green-ink);
   border-color: var(--line-2);
 }
@@ -1343,8 +1171,6 @@ figure[id] {
   .masthead > .wrap,
   .masthead > .wrap-wide,
   .card {
-    -webkit-backdrop-filter: blur(16px) saturate(165%);
-    backdrop-filter: blur(16px) saturate(165%);
   }
 }
 
@@ -1353,9 +1179,6 @@ figure[id] {
   body {
     background: #fff;
     font-size: 11pt;
-  }
-  body::before {
-    display: none;
   }
   .home .masthead > .wrap,
   .home .sec-head,
@@ -1405,8 +1228,6 @@ figure[id] {
     background: #fff;
     border: 1px solid #999;
     box-shadow: none;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
   }
   .card::before,
   .card::after,
